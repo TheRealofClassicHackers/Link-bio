@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>T.R.C.H • Free Bio Link Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/qrcode.js@1.0.0/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <style>
+    :root { --primary: #1e90ff; }
+    body { margin:0; font-family:'Poppins',sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color:#fff; min-height:100vh; padding:20px 0; }
+    .container { max-width:1100px; margin:auto; padding:0 15px; }
+    header { text-align:center; padding:30px 0 10px; }
+    h1 { font-size:3.2rem; margin:0; background:-webkit-linear-gradient(#fff, #ccc); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .tagline { font-size:1.3rem; opacity:0.9; }
+
+    .editor-preview { display:grid; grid-template-columns:1fr 1fr; gap:30px; margin-top:30px; }
+    @media (max-width:900px) { .editor-preview { grid-template-columns:1fr; } }
+
+    .card { background:rgba(255,255,255,0.12); backdrop-filter:blur(15px); border-radius:20px; padding:25px; box-shadow:0 15px 35px rgba(0,0,0,0.3); }
+    label { display:block; margin:18px 0 8px; font-weight:600; }
+    input, textarea, select { width:100%; padding:14px; border:none; border-radius:12px; background:rgba(255,255,255,0.2); color:#fff; font-size:1rem; }
+    input::placeholder, textarea::placeholder { color:#ddd; }
+
+    .upload-box { border:2px dashed #fff; border-radius:15px; padding:20px; text-align:center; cursor:pointer; transition:0.3s; margin:10px 0; }
+    .upload-box:hover { background:rgba(255,255,255,0.1); }
+    .upload-box img { width:100%; max-height:200px; object-fit:cover; border-radius:10px; margin-top:10px; display:none; }
+
+    button { margin:20px 0; padding:16px 32px; background:var(--primary); color:#fff; border:none; border-radius:50px; font-size:1.2rem; cursor:pointer; box-shadow:0 10px 30px rgba(30,144,255,0.5); transition:0.3s; }
+    button:hover { transform:translateY(-4px); box-shadow:0 15px 40px rgba(30,144,255,0.7); }
+
+    .preview-box { background:#e8e8e8; color:#333; min-height:100vh; border-radius:20px; overflow:hidden; position:relative; }
+    .preview-container { padding:20px; display:flex; justify-content:center; align-items:center; min-height:100vh; }
+    .bubbles { position:absolute; width:100%; height:100%; top:0; left:0; pointer-events:none; overflow:hidden; }
+    .bubble { position:absolute; border-radius:50%; background:rgba(255,255,255,0.4); animation:float 12s infinite ease-in-out; }
+
+    .success-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:9999; justify-content:center; align-items:center; flex-direction:column; text-align:center; padding:20px; }
+    .success-card { background:#fff; color:#222; padding:40px; border-radius:25px; max-width:90%; box-shadow:0 20px 50px rgba(0,0,0,0.5); }
+    .close-modal { position:absolute; top:20px; right:30px; font-size:2.5rem; cursor:pointer; color:#fff; }
+
+    .btn{display:flex;align-items:center;gap:15px;padding:15px 18px;margin:12px auto;text-decoration:none;font-size:17px;font-weight:500;color:#333;border-radius:18px;background:#e8e8e8;box-shadow:inset 6px 6px 12px rgba(0,0,0,0.18),inset -6px -6px 12px rgba(255,255,255,0.8);transition:0.25s ease;width:90%;max-width:340px;justify-content:center;}
+    .btn:hover{background:#1e90ff;color:white;}
+    .btn i{font-size:22px;}
+    @keyframes float { 0%,100% { transform:translateY(0) scale(1); opacity:0.6; } 50% { transform:translateY(-80px) scale(1.3); opacity:1; } }
+    @keyframes typing{from{width:0;}to{width:280px;}}
+    @keyframes blink{50%{border-color:transparent;}}
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>T.R.C.H</h1>
+    <p class="tagline">Create Your Free Bio Link • Instant GitHub Hosting</p>
+  </header>
+
+  <div class="editor-preview">
+    <div class="card">
+      <h2>Edit Your Bio Page</h2>
+
+      <label>Name</label>
+      <input type="text" id="name" value="Lefenzo WaDi Kentuckiey"/>
+
+      <label>Title / Bio</label>
+      <input type="text" id="title" value="Website Developer or musician"/>
+
+      <label>Profile Picture</label>
+      <div class="upload-box" onclick="document.getElementById('photoUpload').click()">
+        <i class="fas fa-cloud-upload-alt fa-3x"></i><p>Click to upload photo</p>
+        <img id="photoPreview"/>
+      </div>
+      <input type="file" id="photoUpload" accept="image/*" style="display:none"/>
+
+      <label>Background Color</label>
+      <input type="color" id="bgcolor" value="#e8e8e8"/>
+
+      <label>Background Image (optional)</label>
+      <div class="upload-box" onclick="document.getElementById('bgUpload').click()">
+        <i class="fas fa-image fa-3x"></i><p>Upload background</p>
+        <img id="bgPreview"/>
+      </div>
+      <input type="file" id="bgUpload" accept="image/*" style="display:none"/>
+
+      <h3>Social Links (leave empty to hide)</h3>
+      <div style="display:grid;gap:12px;">
+        <div style="display:flex;gap:10px;align-items:center;"><i class="fab fa-whatsapp" style="color:#25D366;font-size:1.5rem;"></i><input type="text" id="whatsapp" placeholder="WhatsApp"/></div>
+        <div style="display:flex;gap:10px;align-items:center;"><i class="fab fa-facebook" style="color:#1877F2;font-size:1.5rem;"></i><input type="text" id="facebook" placeholder="Facebook"/></div>
+        <div style="display:flex;gap:10px;align-items:center;"><i class="fab fa-instagram" style="color:#E4405F;font-size:1.5rem;"></i><input type="text" id="instagram" placeholder="Instagram"/></div>
+        <div style="display:flex;gap:10px;align-items:center;"><i class="fab fa-youtube" style="color:#FF0000;font-size:1.5rem;"></i><input type="text" id="youtube" placeholder="YouTube"/></div>
+        <div style="display:flex;gap:10px;align-items:center;"><i class="fab fa-telegram" style="color:#0088cc;font-size:1.5rem;"></i><input type="text" id="telegram" placeholder="Telegram"/></div>
+        <div style="display:flex;gap:10px;align-items:center;"><i class="fab fa-tiktok" style="color:#000;font-size:1.5rem;"></i><input type="text" id="tiktok" placeholder="TikTok"/></div>
+      </div>
+
+      <button onclick="generateAndHost()">HOST MY PAGE NOW</button>
+      <p style="font-size:0.9rem;opacity:0.9;margin-top:20px;">
+        Join us → <a href="https://whatsapp.com/channel/0029Vb6aIh56GcGO66OuP60j" target="_blank" style="color:#25D366;font-weight:700;">T.R.C.H WhatsApp</a>
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Live Preview</h2>
+      <div id="preview" class="preview-box">
+        <div class="bubbles" id="bubbles"></div>
+        <div class="preview-container" id="previewContent"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Success Modal -->
+<div class="success-modal" id="successModal">
+  <div class="close-modal" onclick="document.getElementById('successModal').style.display='none'">×</div>
+  <div class="success-card">
+    <h2>Congratulations! Your page is ready!</h2>
+    <p><strong>Step 1:</strong> Download your page file below<br>
+    <strong>Step 2:</strong> Upload it to your GitHub → folder: <code>links/@yourname/</code></p>
+    <div style="background:#f0f0f0;padding:15px;border-radius:15px;margin:20px 0;font-size:1.1rem;word-break:break-all;" id="finalUrl"></div>
+    <button onclick="downloadPage()" style="background:#1e90ff;margin:10px;padding:14px 30px;">Download index.html</button>
+    <div id="qrcode" style="margin:20px auto;"></div>
+    <div style="margin-top:20px;color:#666;">Hosted with love by <strong>T.R.C.H</strong></div>
+  </div>
+</div>
+
+<script>
+// Add bubbles
+function addBubbles() {
+  const container = document.getElementById("bubbles");
+  for(let i=0;i<7;i++){
+    const b = document.createElement("div");
+    b.className="bubble";
+    b.style.width = b.style.height = (50 + Math.random()*90)+"px";
+    b.style.left = (10 + Math.random()*80)+"%";
+    b.style.top = (60 + Math.random()*30)+"%";
+    b.style.animationDelay = Math.random()*5+"s";
+    b.style.animationDuration = (10+Math.random()*10)+"s";
+    container.appendChild(b);
+  }
+}
+addBubbles();
+
+let profileDataUrl = "", bgDataUrl = "";
+
+document.getElementById("photoUpload").onchange = e => {
+  const file = e.target.files[0];
+  if(file){
+    const reader = new FileReader();
+    reader.onload = () => {
+      profileDataUrl = reader.result;
+      document.getElementById("photoPreview").src = profileDataUrl;
+      document.getElementById("photoPreview").style.display = "block";
+      updatePreview();
+    };
+    reader.readAsDataURL(file);
+  }
+};
+
+document.getElementById("bgUpload").onchange = e => {
+  const file = e.target.files[0];
+  if(file){
+    const reader = new FileReader();
+    reader.onload = () => {
+      bgDataUrl = reader.result;
+      document.getElementById("bgPreview").src = bgDataUrl;
+      document.getElementById("bgPreview").style.display = "block";
+      updatePreview();
+    };
+    reader.readAsDataURL(file);
+  }
+};
+
+function updatePreview() {
+  const data = {
+    name: document.getElementById("name").value || "Your Name",
+    title: document.getElementById("title").value || "Your Title",
+    photo: profileDataUrl,
+    bgcolor: document.getElementById("bgcolor").value,
+    bgimage: bgDataUrl,
+    whatsapp: document.getElementById("whatsapp").value,
+    facebook: document.getElementById("facebook").value,
+    instagram: document.getElementById("instagram").value,
+    youtube: document.getElementById("youtube").value,
+    telegram: document.getElementById("telegram").value,
+    tiktok: document.getElementById("tiktok").value,
+  };
+
+  const links = [];
+  const icons = {whatsapp:"fab fa-whatsapp #25D366", facebook:"fab fa-facebook #1877F2", instagram:"fab fa-instagram #E4405F", youtube:"fab fa-youtube #FF0000", telegram:"fab fa-telegram #0088cc", tiktok:"fab fa-tiktok #000"};
+  Object.keys(icons).forEach(s => {
+    if(data[s]) {
+      const [icon, color] = icons[s].split(" ");
+      links.push(`<a class="btn" href="${data[s]}" target="_blank"><i class="${icon}" style="color:${color}"></i> ${s.charAt(0).toUpperCase()+s.slice(1)}</a>`);
+    }
+  });
+
+  const photoHtml = data.photo ? `<img src="${data.photo}" style="width:130px;height:130px;border-radius:50%;object-fit:cover;margin-bottom:20px;border:6px solid #fff;box-shadow:0 10px 30px rgba(0,0,0,0.3);">` : '';
+
+  document.getElementById("previewContent").innerHTML = `
+    <div style="text-align:center;max-width:380px;width:100%;">
+      ${photoHtml}
+      <div style="font-size:28px;font-weight:700;margin:15px 0;color:#222;">${data.name}</div>
+      <div style="font-size:18px;color:#1e90ff;margin-bottom:30px;white-space:nowrap;overflow:hidden;border-right:3px solid #1e90ff;animation:typing 3.5s steps(30,end) forwards, blink 0.8s infinite;display:inline-block;">
+        ${data.title}
+      </div>
+      ${links.join("")}
+      <div style="margin-top:30px;padding-top:20px;border-top:1px solid #ddd;color:#666;font-size:0.9rem;">
+        Hosted on <strong>T.R.C.H</strong> • Join us → 
+        <a href="https://whatsapp.com/channel/0029Vb6aIh56GcGO66OuP60j" target="_blank" style="color:#25D366;">WhatsApp</a>
+      </div>
+    </div>
+  `;
+
+  document.querySelector(".preview-container").style.background = data.bgimage ? `url('${data.bgimage}') center/cover no-repeat` : data.bgcolor;
+  document.querySelector(".preview-box").style.background = data.bgimage ? "transparent" : data.bgcolor;
+}
+
+document.querySelectorAll("input").forEach(el => el.addEventListener("input", updatePreview));
+updatePreview();
+
+let finalHTML = "";
+let username = "";
+
+function generateAndHost() {
+  username = prompt("Choose your username (e.g. lefenzo, private27):", document.getElementById("name").value.toLowerCase().replace(/[^a-z0-9]/g,"").substring(0,20)) || "user";
+  if(!username || username.length < 2) return alert("Username too short!");
+
+  updatePreview(); // Final update
+
+  const repo = prompt("Enter your GitHub username (for the live link):", "yourusername");
+  const finalUrl = `https://${repo}.github.io/trch-links/links/@${username}`;
+
+  document.getElementById("finalUrl").textContent = finalUrl + "/index.html";
+  new QRCode(document.getElementById("qrcode"), { text: finalUrl, width: 180, height: 180 });
+
+  // Generate final HTML
+  const previewHTML = document.getElementById("previewContent").innerHTML;
+  const bgStyle = bgDataUrl ? `url('${bgDataUrl}') center/cover no-repeat` : document.getElementById("bgcolor").value;
+
+  finalHTML = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>@${username} • T.R.C.H</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>body{margin:0;font-family:Poppins,sans-serif;background:${bgStyle};display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px;position:relative;overflow:hidden}
+  .bubbles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+  .bubble{position:absolute;border-radius:50%;background:rgba(255,255,255,0.4);animation:float 12s infinite ease-in-out}
+  @keyframes float{0%,100%{transform:translateY(0) scale(1);opacity:0.6}50%{transform:translateY(-80px) scale(1.3);opacity:1}}
+  .btn{display:flex;align-items:center;gap:15px;padding:15px 18px;margin:12px auto;text-decoration:none;font-size:17px;font-weight:500;color:#333;border-radius:18px;background:#e8e8e8;box-shadow:inset 6px 6px 12px rgba(0,0,0,0.18),inset -6px -6px 12px rgba(255,255,255,0.8);transition:0.25s;width:90%;max-width:340px;justify-content:center;}
+  .btn:hover{background:#1e90ff;color:white;}
+  @keyframes typing{from{width:0}to{width:280px}}
+  @keyframes blink{50%{border-color:transparent}}
+  </style></head><body>
+  <div class="bubbles">${document.getElementById("bubbles").innerHTML}</div>
+  <div style="text-align:center;max-width:380px;width:100%;z-index:2">` + previewHTML + `</div></body></html>`;
+
+  confetti({ particleCount: 200, spread: 70, origin: { y: 0.6 } });
+  document.getElementById("successModal").style.display = "flex";
+}
+
+function downloadPage() {
+  const blob = new Blob([finalHTML], {type: "text/html"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "index.html";
+  a.click();
+
+  alert("Downloaded! Now:\n1. Go to your GitHub repo\n2. Create folder: links/@"+username+"\n3. Upload this index.html there\nYour link will be live in <30 seconds!");
+}
+</script>
+</body>
+</html>
