@@ -28,22 +28,17 @@
     .upload-box:hover { background:rgba(255,255,255,0.1); }
     .upload-box img { width:100%; max-height:200px; object-fit:cover; border-radius:10px; margin-top:10px; display:none; }
 
-    button { margin:30px 0; padding:18px 50px; background:var(--primary); color:#000; border:none; border-radius:50px; font-size:1.5rem; font-weight:700; cursor:pointer; }
+    button { margin:30px 0; padding:18px 50px; background:var(--primary); color:#000; border:none; border-radius:50px; font-size:1.5rem; font-weight:700; cursor:pointer; transition:0.3s; }
     button:hover { transform:scale(1.05); box-shadow:0 15px 40px rgba(0,255,136,0.5); }
 
     .preview-box { background:#fff; color:#222; border-radius:20px; overflow:hidden; box-shadow:0 20px 50px rgba(0,0,0,0.4); }
-    .preview { padding:30px; min-height:100vh; display:flex; justify-content:center; align-items:center; background:var(--bg,#fff); }
+    .preview { padding:30px; min-height:100vh; display:flex; justify-content:center; align-items:center; }
 
     .success-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:9999; justify-content:center; align-items:center; padding:20px; }
     .success-card { background:linear-gradient(135deg,#1e90ff,#00ff88); padding:50px; border-radius:30px; text-align:center; max-width:90%; border:4px solid #fff; }
     .success-card h2 { font-size:3rem; color:#fff; text-shadow:0 5px 20px rgba(0,0,0,0.5); }
-    .live { font-size:1.7rem; background:#000; color:#00ff88; padding:18px; border-radius:15px; margin:20px 0; font-weight:bold; }
-    .btn-success { background:#fff; color:#000; padding:15px 35px; margin:10px; border-radius:50px; text-decoration:none; font-weight:700; font-size:1.1rem; }
-
-    .skill { margin:15px 0; }
-    .skill-name { text-align:left; font-weight:600; margin-bottom:5px; }
-    .bar { height:12px; background:#333; border-radius:10px; overflow:hidden; }
-    .fill { height:100%; background:var(--primary); border-radius:10px; transition:width 1s ease; }
+    .live { font-size:1.7rem; background:#000; color:#00ff88; padding:18px; border-radius:15px; margin:20px 0; font-weight:bold; word-break:break-all; }
+    .btn-success { background:#fff; color:#000; padding:15px 35px; margin:10px; border-radius:50px; text-decoration:none; font-weight:700; font-size:1.1rem; display:inline-block; }
 
     .bio-btn { display:flex; align-items:center; justify-content:center; gap:15px; padding:18px; margin:15px auto; width:90%; max-width:380px; background:#e8e8e8; color:#222; border-radius:20px; text-decoration:none; font-weight:600; box-shadow:0 8px 20px rgba(0,0,0,0.2); transition:0.3s; }
     .bio-btn:hover { background:var(--accent); color:white; transform:translateY(-5px); }
@@ -54,23 +49,23 @@
 
 <div class="container">
   <h1>BioLink</h1>
-  <p class="tagline">Pro Bio Links | Free | Instant |Host | • Instant Live</p>
+  <p class="tagline">Pro Bio Links | Free | Instant | Real Hosted Links</p>
 
   <div class="editor-preview">
     <div class="card">
-      <h2 style="margin-top:0;">Build Your bio link Page</h2>
+      <h2 style="margin-top:0;">Build Your Bio Link</h2>
 
       <label>Name</label>
       <input type="text" id="name" value="Lefenzo" />
 
-      <label>Username (for link)</label>
+      <label>Username (for your link)</label>
       <input type="text" id="username" placeholder="lefenzo" value="lefenzo" />
 
       <label>Title</label>
       <input type="text" id="title" value="Website Developer & Musician" />
 
       <label>About Me</label>
-      <textarea id="about" placeholder="Write something about yourself...">I make fire websites and music 🔥</textarea>
+      <textarea id="about" placeholder="Write something about yourself...">I make fire websites and music</textarea>
 
       <label>Profile Picture</label>
       <div class="upload-box" onclick="document.getElementById('photo').click()">
@@ -83,18 +78,22 @@
       <input type="color" id="bgcolor" value="#ffffff"/>
 
       <h3>Skills (optional)</h3>
-      <input type="text" id="skill1" placeholder="Skill 1 (e.g. Web Design)" value="Web Design"/>
-      <input type="number" id="skill1p" min="10" max="100" value="90"/>
-      <input type="text" id="skill2" placeholder="Skill 2" value="Music Production"/>
-      <input type="number" id="skill2p" min="10" max="100" value="85"/>
+      <div>
+        <input type="text" id="skill1" placeholder="Skill 1" value="Web Design"/>
+        <input type="number" id="skill1p" min="10" max="100" value="90"/>
+      </div>
+      <div>
+        <input type="text" id="skill2" placeholder="Skill 2" value="Music Production"/>
+        <input type="number" id="skill2p" min="10" max="100" value="85"/>
+      </div>
 
       <h3>Social Links</h3>
-      <input type="text" id="whatsapp" placeholder="WhatsApp"/>
-      <input type="text" id="instagram" placeholder="Instagram"/>
-      <input type="text" id="youtube" placeholder="YouTube"/>
-      <input type="text" id="tiktok" placeholder="TikTok"/>
-      <input type="text" id="telegram" placeholder="Telegram"/>
-      <input type="text" id="ngl" placeholder="NGL Link (https://ngl.link/yourname)"/>
+      <input type="url" id="whatsapp" placeholder="https://wa.me/yournumber"/>
+      <input type="url" id="instagram" placeholder="https://instagram.com/yourname"/>
+      <input type="url" id="youtube" placeholder="https://youtube.com/@yourname"/>
+      <input type="url" id="tiktok" placeholder="https://tiktok.com/@yourname"/>
+      <input type="url" id="telegram" placeholder="https://t.me/yourname"/>
+      <input type="url" id="ngl" placeholder="https://ngl.link/yourname"/>
 
       <button onclick="goLive()">GO LIVE NOW</button>
       <p style="font-size:0.9rem;margin-top:20px;">
@@ -111,21 +110,24 @@
   </div>
 </div>
 
-<!-- SUCCESS -->
+<!-- SUCCESS MODAL -->
 <div class="success-modal" id="success">
   <div class="success-card">
     <h2>YOUR LINK IS LIVE!</h2>
-    <div class="live" id="liveLink">https://yourname.github.io/trch/@lefenzo</div>
+    <div class="live" id="liveLink">https://yourname.tinyhost.me</div>
     <div id="qrcode" style="margin:30px auto;"></div>
     <a id="openBtn" target="_blank" class="btn-success">OPEN MY PAGE</a>
-    <a id="shareBtn" target="_blank" class="btn-success">Share on WhatsApp</a>
-    <p>Made with <3 by <strong>T.R.C.H</strong></p>
+    <a id="shareBtn" class="btn-success">Share on WhatsApp</a>
+    <p>Made with love by <strong>T.R.C.H</strong></p>
   </div>
 </div>
 
 <script>
 let photo = "";
+let skills = "";
+let links = "";
 
+// Profile photo handler
 document.getElementById("photo").onchange = e => {
   const f = e.target.files[0];
   if(f){
@@ -140,79 +142,149 @@ document.getElementById("photo").onchange = e => {
   }
 };
 
+// Render preview
 function render() {
   const name = document.getElementById("name").value || "Name";
   const title = document.getElementById("title").value || "Creator";
   const about = document.getElementById("about").value || "";
   const bg = document.getElementById("bgcolor").value;
 
-  let links = "";
-  const platforms = {
-    whatsapp: "fab fa-whatsapp text-success",
-    instagram: "fab fa-instagram text-danger",
-    youtube: "fab fa-youtube text-red",
-    tiktok: "fab fa-tiktok text-black",
-    telegram: "fab fa-telegram text-info",
-    ngl: "fas fa-comment-dots text-purple"
-  };
-  Object.keys(platforms).forEach(p => {
-    const url = document.getElementById(p).value.trim();
-    if(url) links += `<a class="bio-btn" href="${url}" target="_blank"><i class="${platforms[p]}"></i> ${p === "ngl" ? "Send Anonymous Message" : p.charAt(0).toUpperCase() + p.slice(1)}</a>`;
-  });
-
-  let skills = "";
+  // Generate skills
+  skills = "";
   for(let i=1; i<=2; i++){
     const s = document.getElementById("skill"+i).value.trim();
-    const p = document.getElementById("skill"+i+"p").value;
+    const p = document.getElementById("skill"+i+"p").value || 0;
     if(s) skills += `<div class="skill"><div class="skill-name">${s}</div><div class="bar"><div class="fill" style="width:${p}%"></div></div></div>`;
   }
 
+  // Generate social links
+  links = "";
+  const platforms = {
+    whatsapp: { icon: "fab fa-whatsapp", color: "#25D366" },
+    instagram: { icon: "fab fa-instagram", color: "#E4405F" },
+    youtube: { icon: "fab fa-youtube", color: "#FF0000" },
+    tiktok: { icon: "fab fa-tiktok", color: "#000000" },
+    telegram: { icon: "fab fa-telegram", color: "#0088cc" },
+    ngl: { icon: "fas fa-comment-dots", color: "#9c27b0", label: "Send Anonymous Message" }
+  };
+
+  Object.keys(platforms).forEach(p => {
+    const url = document.getElementById(p).value.trim();
+    if(url){
+      const plat = platforms[p];
+      const label = plat.label || p.charAt(0).toUpperCase() + p.slice(1);
+      links += `<a class="bio-btn" href="${url}" target="_blank">
+        <i class="${plat.icon}" style="color:${plat.color}"></i> ${label}
+      </a>`;
+    }
+  });
+
   document.getElementById("preview").innerHTML = `
     <div style="text-align:center;max-width:400px;padding:20px;">
-      ${photo ? `<img src="${photo}" style="width:140px;height:140px;border-radius:50%;border:6px solid #fff;box-shadow:0 15px 40px rgba(0,0,0,0.4);margin-bottom:20px;">` : ''}
+      ${photo ? `<img src="${photo}" style="width:140px;height:140px;border-radius:50%;border:6px solid #fff;box-shadow:0 15px 40px rgba(0,0,0,0.4);margin-bottom:20px;object-fit:cover;">` : ''}
       <h1 style="font-size:32px;margin:10px 0;">${name}</h1>
       <p style="font-size:20px;color:#1e90ff;font-weight:600;margin-bottom:20px;">${title}</p>
       ${about ? `<p style="background:rgba(0,0,0,0.1);padding:15px;border-radius:15px;margin:20px 0;line-height:1.6;">${about.replace(/\n/g,"<br>")}</p>` : ''}
       ${skills ? `<div style="margin:30px 0;">${skills}</div>` : ''}
       ${links}
-      <div style="margin-top:40px;font-size:0.9rem;color:#777;">Powered by <strong>T.R.C.H</strong></div>
+      <div style="margin-top:40px;padding-top:20px;border-top:1px solid #ddd;font-size:0.9rem;color:#666;">
+        Made by <strong>lefenzo</strong> • 
+        <a href="https://facebook.com/lefenzo.dev" target="_blank" style="color:#1877f2;text-decoration:underline;">Support me on Facebook</a>
+      </div>
     </div>`;
-  document.querySelector(".preview").style.background = bg;
+  document.querySelector(".preview").style.backgroundColor = bg;
 }
 
+// Live input updates
 document.querySelectorAll("input, textarea").forEach(el => el.addEventListener("input", render));
 render();
 
+// GO LIVE — REAL HOSTING
 function goLive() {
-  const username = document.getElementById("username").value.trim().toLowerCase().replace(/[^a-z0-9]/g,"");
-  if(!username || username.length < 2) return alert("Choose a valid username!");
+  const username = document.getElementById("username").value.trim().toLowerCase().replace(/[^a-z0-9]/g, "");
+  if (!username || username.length < 3) return alert("Username must be 3+ characters (letters/numbers only)");
 
   render();
 
-  const finalHTML = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>@${username}</title>
+  const bg = document.getElementById("bgcolor").value;
+  const finalHTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>@${username} • BioLink</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-  <style>body{margin:0;background:${document.getElementById("bgcolor").value};min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px;font-family:Poppins,sans-serif;}
-  .bio-btn{display:flex;align-items:center;justify-content:center;gap:15px;padding:18px;margin:15px auto;width:90%;max-width:380px;background:#e8e8e8;color:#222;border-radius:20px;text-decoration:none;font-weight:600;box-shadow:0 8px 20px rgba(0,0,0,0.2);transition:0.3s;}
-  .bio-btn:hover{background:#1e90ff;color:white;transform:translateY(-5px);}</style></head><body>
-  ${document.getElementById("preview").innerHTML}</body></html>`;
+  <style>
+    :root{--primary:#00ff88;--accent:#1e90ff;}
+    body{margin:0;background:${bg};min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px;font-family:'Poppins',sans-serif;color:#222;}
+    .card{max-width:400px;width:100%;text-align:center;}
+    img{width:140px;height:140px;border-radius:50%;border:6px solid #fff;box-shadow:0 15px 40px rgba(0,0,0,0.4);margin-bottom:20px;object-fit:cover;}
+    h1{font-size:32px;margin:10px 0;}
+    .title{color:#1e90ff;font-weight:600;font-size:20px;margin-bottom:20px;}
+    .about{background:rgba(0,0,0,0.1);padding:15px;border-radius:15px;margin:20px 0;line-height:1.6;}
+    .skill{margin:15px 0;}
+    .skill-name{text-align:left;font-weight:600;margin-bottom:5px;}
+    .bar{height:12px;background:#ddd;border-radius:10px;overflow:hidden;}
+    .fill{height:100%;background:var(--primary);border-radius:10px;}
+    .bio-btn{display:flex;align-items:center;justify-content:center;gap:15px;padding:18px;margin:15px auto;width:90%;max-width:380px;background:#e8e8e8;color:#222;border-radius:20px;text-decoration:none;font-weight:600;box-shadow:0 8px 20px rgba(0,0,0,0.2);transition:0.3s;}
+    .bio-btn:hover{background:var(--accent);color:white;transform:translateY(-5px);}
+    .bio-btn i{font-size:24px;}
+    footer{margin-top:40px;padding-top:20px;border-top:1px solid #ddd;font-size:0.9rem;color:#666;}
+  </style>
+</head>
+<body>
+  <div class="card">
+    ${photo ? `<img src="${photo}" alt="@${username}">` : ''}
+    <h1>${document.getElementById("name").value || "Name"}</h1>
+    <p class="title">${document.getElementById("title").value}</p>
+    ${document.getElementById("about").value ? `<p class="about">${document.getElementById("about").value.replace(/\n/g,"<br>")}</p>` : ''}
+    ${skills}
+    ${links}
+    <footer>
+      Made by <strong>lefenzo</strong> • 
+      <a href="https://facebook.com/lefenzo.dev" target="_blank" style="color:#1877f2;text-decoration:underline;">Support me on Facebook</a>
+    </footer>
+  </div>
+</body>
+</html>`;
 
-  localStorage.setItem("trch_bio_" + username, finalHTML);
+  const blob = new Blob([finalHTML], { type: "text/html" });
+  const file = new File([blob], "index.html", { type: "text/html" });
+  const formData = new FormData();
+  formData.append("file", file);
 
-  const liveUrl = location.href.split(/[?#]/)[0] + "?@" + username;
-
-  document.getElementById("liveLink").textContent = liveUrl;
-  document.getElementById("openBtn").href = liveUrl;
-  document.getElementById("shareBtn").href = "https://wa.me/?text=Check my new bio: " + encodeURIComponent(liveUrl);
-  new QRCode(document.getElementById("qrcode"), {text: liveUrl, width: 220, height: 220, colorDark: "#000", colorLight: "#fff"});
-  confetti({particleCount: 400, spread: 120, origin: { y: 0.6 }});
-  document.getElementById("success").style.display = "flex";
-}
-
-// Auto-show page if visiting with ?@username
-if(location.search.startsWith("?@")){
-  const key = "trch_bio_" + location.search.slice(2);
-  const page = localStorage.getItem(key);
-  if(page) document.documentElement.innerHTML = page;
+  fetch("https://api.tinyhost.me/v1/upload", {
+    method: "POST",
+    body: formData
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.url) {
+      const liveUrl = data.url;
+      document.getElementById("liveLink").textContent = liveUrl;
+      document.getElementById("openBtn").href = liveUrl;
+      document.getElementById("shareBtn").href = "https://api.whatsapp.com/send?text=Check out my new bio link 🔥 " + encodeURIComponent(liveUrl);
+      new QRCode(document.getElementById("qrcode"), {text: liveUrl, width: 220, height: 220, colorDark: "#000", colorLight: "#fff"});
+      confetti({particleCount: 400, spread: 120, origin: { y: 0.6 }});
+      document.getElementById("success").style.display = "flex";
+    } else {
+      alert("Hosting failed. Trying backup host...");
+      // Backup host
+      fetch("https://ttm.sh/", { method: "POST", body: finalHTML })
+        .then(r => r.text())
+        .then(url => {
+          const liveUrl = url.trim();
+          document.getElementById("liveLink").textContent = liveUrl;
+          document.getElementById("openBtn").href = liveUrl;
+          document.getElementById("shareBtn").href = "https://api.whatsapp.com/send?text=Check my bio 🔥 " + encodeURIComponent(liveUrl);
+          new QRCode(document.getElementById("qrcode"), {text: liveUrl, width: 220, height: 220});
+          confetti();
+          document.getElementById("success").style.display = "flex";
+        });
+    }
+  })
+  .catch(() => alert("No internet or hosting down. Try again!"));
 }
 </script>
 </body>
